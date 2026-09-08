@@ -1,0 +1,50 @@
+digraph USDA_MCP {
+    graph [
+        goal="Build the usda-fdc-mcp MCP server per SPEC.md",
+        model_stylesheet="
+            *            { model: go-alt:minimax-m3; reasoning_effort: low; }
+            .gate        { }
+            .critical    { model: go-resp:gpt-5.6-luna; reasoning_effort: high; }
+            .conformance { model: go-resp:gpt-5.6-luna; reasoning_effort: high; }
+        "
+    ]
+
+    start [shape=Mdiamond]
+
+    plan [label="Write implementation plan", class="critical"]
+    spec_review [label="Approve plan + tool contracts", shape=hexagon]
+    scaffold [label="Scaffold repo and entrypoint"]
+
+    client [label="Implement fdc_client (auth, 429 backoff, rate headers)", class="conformance"]
+    normalize [label="Implement normalize (pydantic models, nutrient select)", class="conformance"]
+    dv [label="Implement dv (FDA DV table and pct math)", class="conformance"]
+    tools [label="Implement server.py tool wrappers per SPEC", class="critical"]
+
+    lint [label="Run ruff and mypy", shape=box]
+    unit [label="Run unit and fixture tests", shape=box]
+    conformance [label="Run MCP conformance tests", shape=box, class="conformance"]
+    review [label="Human review: live end-to-end call", shape=hexagon]
+    docs [label="Write README and examples"]
+    retro [label="Write stage retro", class="critical"]
+    exit [shape=Msquare]
+
+    start -> plan -> spec_review -> scaffold
+
+    scaffold -> client
+    scaffold -> normalize
+    scaffold -> dv
+    client -> tools
+    normalize -> tools
+    dv -> tools
+
+    tools -> lint [label="pass"]
+    lint -> tools [label="fail (max 2)"]
+    lint -> unit [label="pass"]
+    unit -> tools [label="fail (max 2)", style=bold]
+    unit -> conformance [label="pass"]
+    conformance -> tools [label="fail (max 2)"]
+    conformance -> review [label="pass"]
+    review -> docs [label="approved"]
+    review -> plan [label="revise spec or contracts"]
+    docs -> retro -> exit
+}
