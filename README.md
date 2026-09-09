@@ -1,2 +1,2 @@
-# usda-fdc-mcp
-Exposes USDA's FoodData Central API as MCP tools
+# USDA's FoodData Central MCP
+Exposes USDA's FoodData Central API as Model Context Protocol (MCP) tools.
