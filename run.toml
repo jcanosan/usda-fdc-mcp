@@ -1,0 +1,7 @@
+_version = 1
+
+[workflow]
+graph = "graph.dot"
+
+[run.environment]
+id = "local"

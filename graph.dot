@@ -2,10 +2,10 @@ digraph USDA_MCP {
     graph [
         goal="Build the usda-fdc-mcp MCP server per SPEC.md",
         model_stylesheet="
-            *            { model: go-alt:minimax-m3; reasoning_effort: low; }
+            *            { model: minimax-m3; reasoning_effort: low; }
             .gate        { }
-            .critical    { model: go-resp:gpt-5.6-luna; reasoning_effort: high; }
-            .conformance { model: go-resp:gpt-5.6-luna; reasoning_effort: high; }
+            .critical    { model: gpt-5.6-luna; reasoning_effort: high; }
+            .conformance { model: gpt-5.6-luna; reasoning_effort: high; }
         "
     ]
 
