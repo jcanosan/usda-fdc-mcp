@@ -4,4 +4,4 @@ _version = 1
 graph = "graph.dot"
 
 [run.environment]
-id = "local"
+id = "default"
